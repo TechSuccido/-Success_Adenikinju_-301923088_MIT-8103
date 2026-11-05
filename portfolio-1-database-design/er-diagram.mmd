@@ -1,0 +1,49 @@
+erDiagram
+    CUSTOMERS ||--o{ ADDRESSES : has
+    CUSTOMERS ||--o{ ORDERS : places
+    CUSTOMERS ||--o{ REVIEWS : writes
+    ADDRESSES ||--o{ ORDERS : "ships to"
+    SELLERS ||--o{ PRODUCTS : lists
+    CATEGORIES ||--o{ PRODUCTS : classifies
+    CATEGORIES |o--o{ CATEGORIES : "parent of"
+    PRODUCTS ||--|| INVENTORY : "stock held in"
+    PRODUCTS ||--o{ ORDER_ITEMS : "appears in"
+    PRODUCTS ||--o{ REVIEWS : "reviewed in"
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    ORDERS ||--o{ PAYMENTS : "paid by"
+    ORDERS ||--o| SHIPMENTS : "delivered via"
+
+    CUSTOMERS { bigint customer_id PK
+        varchar email UK
+        varchar full_name }
+    ADDRESSES { bigint address_id PK
+        bigint customer_id FK }
+    SELLERS { bigint seller_id PK
+        varchar business_name UK }
+    CATEGORIES { int category_id PK
+        int parent_category_id FK }
+    PRODUCTS { bigint product_id PK
+        bigint seller_id FK
+        int category_id FK
+        varchar sku UK
+        numeric unit_price }
+    INVENTORY { bigint product_id PK, FK
+        int quantity_on_hand }
+    ORDERS { bigint order_id PK
+        bigint customer_id FK
+        bigint shipping_address_id FK
+        varchar status
+        numeric total_amount }
+    ORDER_ITEMS { bigint order_id PK, FK
+        bigint product_id PK, FK
+        int quantity
+        numeric unit_price }
+    PAYMENTS { bigint payment_id PK
+        bigint order_id FK
+        varchar transaction_ref UK }
+    SHIPMENTS { bigint shipment_id PK
+        bigint order_id FK, UK
+        varchar tracking_number UK }
+    REVIEWS { bigint review_id PK
+        bigint product_id FK
+        bigint customer_id FK }
